@@ -133,6 +133,35 @@ module.exports = env => {
                     !isDevEnv && '@babel/plugin-transform-react-inline-elements',
                     !isDevEnv && '@babel/plugin-transform-react-constant-elements',
                     !isDevEnv && 'transform-react-remove-prop-types',
+                    [
+                      'transform-imports',
+                      {
+                        '@material-ui/core': {
+                          transform: function(importName) {
+                            return `@material-ui/core/${importName}`;
+                          },
+                          preventFullImport: true
+                        },
+                        '@material-ui/lab': {
+                          transform: function(importName) {
+                            return `@material-ui/lab/${importName}`;
+                          },
+                          preventFullImport: true
+                        },
+                        '@material-ui/styles': {
+                          transform: function(importName) {
+                            return `@material-ui/styles/${importName}`;
+                          },
+                          preventFullImport: true
+                        },
+                        '@material-ui/icons': {
+                          transform: function(importName) {
+                            return `@material-ui/icons/${importName}`;
+                          },
+                          preventFullImport: true
+                        }
+                      }
+                    ],
                     isDevEnv && 'react-hot-loader/babel'
                   ].filter(Boolean),
                   cacheDirectory: true,

@@ -5,6 +5,14 @@ import * as serviceWorker from './serviceWorker';
 
 const rootElement = document.getElementById('root')!;
 
-render(<App />, rootElement);
+function renderApp() {
+  render(<App />, rootElement);
+}
+
+renderApp();
 
 serviceWorker.unregister();
+
+if (module.hot) {
+  module.hot.accept('./App', renderApp);
+}

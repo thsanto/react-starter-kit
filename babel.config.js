@@ -1,19 +1,25 @@
 module.exports = api => {
   api.cache(true);
 
-  const runtime =
-    process.env['ENV'] === 'prod' ? '@babel/runtime' : '@babel/plugin-transform-runtime';
-    
-  const presets = ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'];
+  const isDevEnv = process.env['ENV'] !== 'prod';
+
+  const presets = [
+    ['@babel/preset-env', { modules: false, targets: { browsers: 'last 2 versions' } }],
+    '@babel/preset-typescript',
+    '@babel/preset-react'
+  ];
+
   const plugins = [
-    runtime,
+    isDevEnv && '@babel/plugin-transform-runtime',
+    !isDevEnv && '@babel/runtime',
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-object-rest-spread',
-    '@babel/plugin-transform-react-inline-elements',
-    '@babel/plugin-transform-react-constant-elements',
-    'transform-react-remove-prop-types'
-  ];
+    !isDevEnv && '@babel/plugin-transform-react-inline-elements',
+    !isDevEnv && '@babel/plugin-transform-react-constant-elements',
+    !isDevEnv && 'transform-react-remove-prop-types',
+    isDevEnv && 'react-hot-loader/babel'
+  ].filter(Boolean);
 
   return {
     presets,

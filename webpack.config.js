@@ -16,7 +16,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const SafeParser = require('postcss-safe-parser');
 const CompressionPlugin = require('compression-webpack-plugin');
-const BrotliPlugin = require(`brotli-webpack-plugin`);
+const BrotliPlugin = require('brotli-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const paths = {
@@ -73,16 +73,14 @@ const getStyleLoaders = isDevEnv => {
 
 module.exports = env => {
   const isDevEnv = env.NODE_ENV === 'development' ? true : false;
-
   const config = {
     mode: isDevEnv ? 'development' : 'production',
     entry: path.resolve(paths.src, 'main.tsx'),
-    devtool: 'cheap-module-source-map',
     output: {
       filename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.js`,
       chunkFilename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.js`,
       path: paths.dist,
-      pathinfo: true,
+      pathinfo: isDevEnv,
       publicPath: paths.publicPath
     },
     module: {
@@ -269,6 +267,7 @@ module.exports = env => {
   };
 
   if (isDevEnv) {
+    config.devtool = 'cheap-module-source-map';
     config.output.devtoolModuleFilenameTemplate = info =>
       path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
 

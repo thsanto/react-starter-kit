@@ -23,6 +23,7 @@ const paths = {
   src: path.resolve(__dirname, 'src'),
   dist: path.resolve(__dirname, 'dist'),
   public: path.resolve(__dirname, 'public'),
+  entry: path.resolve(__dirname, 'src', 'main.tsx'),
   publicPath: '/'
 };
 
@@ -73,9 +74,10 @@ const getStyleLoaders = isDevEnv => {
 
 module.exports = env => {
   const isDevEnv = env.NODE_ENV === 'development' ? true : false;
+
   const config = {
     mode: isDevEnv ? 'development' : 'production',
-    entry: path.resolve(paths.src, 'main.tsx'),
+    entry: paths.entry,
     output: {
       filename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.js`,
       chunkFilename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.js`,
@@ -101,7 +103,44 @@ module.exports = env => {
               include: /src/,
               test: /\.(j|t)sx?$/,
               use: {
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                options: {
+                  babelrc: false,
+                  presets: [
+                    [
+                      '@babel/preset-env',
+                      {
+                        modules: false,
+                        targets: {
+                          browsers: isDevEnv
+                            ? [
+                                'last 1 chrome version',
+                                'last 1 firefox version',
+                                'last 1 safari version'
+                              ]
+                            : ['>0.2%', 'not dead', 'not op_mini all']
+                        }
+                      }
+                    ],
+                    '@babel/preset-typescript',
+                    '@babel/preset-react'
+                  ],
+                  plugins: [
+                    isDevEnv && '@babel/plugin-transform-runtime',
+                    '@babel/plugin-syntax-dynamic-import',
+                    '@babel/plugin-proposal-class-properties',
+                    '@babel/plugin-proposal-object-rest-spread',
+                    !isDevEnv && '@babel/plugin-transform-react-inline-elements',
+                    !isDevEnv && '@babel/plugin-transform-react-constant-elements',
+                    !isDevEnv && 'transform-react-remove-prop-types',
+                    isDevEnv && 'react-hot-loader/babel'
+                  ].filter(Boolean),
+                  cacheDirectory: true,
+                  cacheCompression: !isDevEnv,
+                  compact: false,
+                  highlightCode: true,
+                  sourceMaps: isDevEnv
+                }
               }
             },
             getStyleLoaders(isDevEnv),
@@ -134,7 +173,6 @@ module.exports = env => {
     },
     target: 'web',
     bail: true,
-    profile: true,
     cache: true,
     plugins: [
       !isDevEnv && new CleanWebpackPlugin(),
@@ -183,14 +221,14 @@ module.exports = env => {
           algorithm: 'gzip',
           test: /\.(js|css|html)$/,
           threshold: 10240,
-          minRatio: 0.8
+          minRatio: 0.99
         }),
       !isDevEnv &&
         new BrotliPlugin({
           asset: '[path].br[query]',
           test: /\.(js|css|html)$/,
           threshold: 10240,
-          minRatio: 0.8
+          minRatio: 0.99
         }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       !isDevEnv &&
@@ -260,9 +298,18 @@ module.exports = env => {
           }
         }
       },
-      runtimeChunk: 'single',
-      namedModules: true,
-      namedChunks: true
+      runtimeChunk: 'single'
+    },
+    node: {
+      node: 'empty',
+      module: 'empty',
+      dgram: 'empty',
+      dns: 'mock',
+      fs: 'empty',
+      http2: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty'
     }
   };
 
@@ -282,7 +329,7 @@ module.exports = env => {
       open: true,
       overlay: true,
       port: 3000,
-      public: `http://localhost:${3000}`,
+      public: 'http://localhost:3000',
       publicPath: paths.publicPath,
       stats: {
         colors: true,

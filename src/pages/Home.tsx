@@ -2,9 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
-type Props = {};
-
-const Home = (props: Props) => {
+const Home = () => {
   const [t] = useTranslation('page____home');
 
   return (

@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
 const Home = () => {
-  const [t] = useTranslation('page____home');
+  const [t] = useTranslation('page__home');
 
   return (
     <>

@@ -21,12 +21,19 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
-const paths = {
+const configs = {
+  // paths
   src: path.resolve(__dirname, 'src'),
   dist: path.resolve(__dirname, 'dist'),
   public: path.resolve(__dirname, 'public'),
   entry: path.resolve(__dirname, 'src', 'main.tsx'),
-  publicPath: '/'
+  publicPath: '/',
+
+  // dev server
+  https: process.env.HTTPS || false,
+  host: process.env.HOST || '0.0.0.0',
+  port: process.env.PORT || 3000,
+  dashboardPort: 3001
 };
 
 const getStyleLoaders = isDevEnv => {
@@ -79,13 +86,13 @@ module.exports = env => {
 
   const config = {
     mode: isDevEnv ? 'development' : 'production',
-    entry: paths.entry,
+    entry: configs.entry,
     output: {
       filename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.js`,
       chunkFilename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.js`,
-      path: paths.dist,
+      path: configs.dist,
       pathinfo: isDevEnv,
-      publicPath: paths.publicPath
+      publicPath: configs.publicPath
     },
     module: {
       strictExportPresence: true,
@@ -211,7 +218,7 @@ module.exports = env => {
       new HtmlWebpackPlugin({
         inject: true,
         template: './public/index.html',
-        baseUrl: paths.publicPath,
+        baseUrl: configs.publicPath,
         minify: isDevEnv
           ? false
           : {
@@ -233,8 +240,8 @@ module.exports = env => {
       !isDevEnv &&
         new CopyPlugin([
           {
-            from: paths.public,
-            to: paths.dist,
+            from: configs.public,
+            to: configs.dist,
             ignore: ['index.html']
           }
         ]),
@@ -243,7 +250,7 @@ module.exports = env => {
         chunkFilename: `static/css/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.css`
       }),
       new PurgecssPlugin({
-        paths: glob.sync(`${paths.src}/**/*`, { nodir: true })
+        paths: glob.sync(`${configs.src}/**/*`, { nodir: true })
       }),
       isDevEnv && new webpack.NamedModulesPlugin(),
       isDevEnv && new webpack.HotModuleReplacementPlugin(),
@@ -357,17 +364,18 @@ module.exports = env => {
 
     config.devServer = {
       compress: true,
-      contentBase: paths.src,
+      contentBase: configs.src,
       disableHostCheck: true,
       historyApiFallback: true,
-      host: '0.0.0.0',
+      https: configs.https,
+      host: configs.highlightCode,
       hot: true,
       inline: true,
       open: true,
       overlay: true,
-      port: 3000,
-      public: 'http://localhost:3000',
-      publicPath: paths.publicPath,
+      port: configs.port,
+      public: `http://localhost:${configs.port}`,
+      publicPath: configs.publicPath,
       stats: {
         colors: true,
         errors: true,

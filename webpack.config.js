@@ -1,9 +1,11 @@
 const path = require('path');
+const glob = require('glob');
 const webpack = require('webpack');
 
 // Share plguins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 
 // Dev plugins
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -237,8 +239,11 @@ module.exports = env => {
           }
         ]),
       new MiniCssExtractPlugin({
-        filename: `static/css/[name]${isDevEnv ? '' : '.[contenthash:8]'}'}.css`,
-        chunkFilename: `static/css/[name]${isDevEnv ? '' : '.[contenthash:8]'}'}.chunk.css`
+        filename: `static/css/[name]${isDevEnv ? '' : '.[contenthash:8]'}.css`,
+        chunkFilename: `static/css/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.css`
+      }),
+      new PurgecssPlugin({
+        paths: glob.sync(`${paths.src}/**/*`, { nodir: true })
       }),
       isDevEnv && new webpack.NamedModulesPlugin(),
       isDevEnv && new webpack.HotModuleReplacementPlugin(),
@@ -282,6 +287,8 @@ module.exports = env => {
       removeAvailableModules: true,
       removeEmptyChunks: true,
       mergeDuplicateChunks: true,
+      // usedExports: true,
+      // sideEffects: true,
       minimize: !isDevEnv,
       minimizer: [
         new TerserPlugin({
@@ -323,7 +330,8 @@ module.exports = env => {
           vendor: {
             test: /[\\\/]node_modules[\\\/]/,
             name: 'vendors',
-            chunks: 'all'
+            chunks: 'all',
+            reuseExistingChunk: true
           }
         }
       },

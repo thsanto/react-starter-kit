@@ -58,7 +58,7 @@ type Props = {
 };
 
 const Sidebar = (props: Props) => {
-  const [t] = useTranslation('component__sidebar');
+  const [t] = useTranslation('component__shared__sidebar');
   const classes = useStyles();
 
   return (

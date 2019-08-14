@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Header = () => {
-  const [t] = useTranslation('component__header');
+  const [t] = useTranslation('component__shared__header');
   const classes = useStyles();
 
   return (

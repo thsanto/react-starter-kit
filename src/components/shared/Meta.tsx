@@ -15,10 +15,10 @@ type Props = {
 };
 
 const Meta = (props: Props) => {
-  const [t] = useTranslation('component__meta');
+  const [t] = useTranslation('component__shared__meta');
 
   const getTitle = () => {
-    let baseTitle = t('title');
+    const baseTitle = t('title');
     let title = props.title || t('description');
 
     if (title!.indexOf(baseTitle) === -1) {

@@ -81,14 +81,14 @@ const Sidebar = (props: Props) => {
       <span className={classes.grow} />
       <div className={classes.footer}>
         {props.open && (
-          <>
-            <Button>
-              <PowerSettingsNewOutlined />
-            </Button>
-            <Button>
-              <FullscreenOutlined />
-            </Button>
-          </>
+          <Button>
+            <PowerSettingsNewOutlined />
+          </Button>
+        )}
+        {props.open && (
+          <Button>
+            <FullscreenOutlined />
+          </Button>
         )}
         <Button onClick={props.toggle}>
           {props.open ? <ChevronLeftOutlined /> : <ChevronRightOutlined />}

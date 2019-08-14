@@ -11,8 +11,8 @@
   },
   "editor.rulers": [100],
   "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": false,
+  "eslint.autoFixOnSave": false,
   "eslint.validate": [
     {
       "language": "javascript",
@@ -33,7 +33,7 @@
   ],
   // "tslint.enable": false,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "debug.node.autoAttach": "on",
+  "debug.node.autoAttach": "off",
   "prettier.printWidth": 100,
   "prettier.tabWidth": 2,
   "prettier.semi": true,

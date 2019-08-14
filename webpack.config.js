@@ -119,70 +119,7 @@ module.exports = env => {
               use: {
                 loader: 'babel-loader',
                 options: {
-                  babelrc: false,
-                  presets: [
-                    [
-                      '@babel/preset-env',
-                      {
-                        modules: false,
-                        targets: {
-                          browsers: isDevEnv
-                            ? [
-                                'last 1 chrome version',
-                                'last 1 firefox version',
-                                'last 1 safari version'
-                              ]
-                            : ['>0.2%', 'not dead', 'not op_mini all']
-                        }
-                      }
-                    ],
-                    '@babel/preset-typescript',
-                    '@babel/preset-react'
-                  ],
-                  plugins: [
-                    isDevEnv && '@babel/plugin-transform-runtime',
-                    '@babel/plugin-syntax-dynamic-import',
-                    '@babel/plugin-proposal-class-properties',
-                    '@babel/plugin-proposal-object-rest-spread',
-                    !isDevEnv && '@babel/plugin-transform-react-inline-elements',
-                    !isDevEnv && '@babel/plugin-transform-react-constant-elements',
-                    !isDevEnv && 'transform-react-remove-prop-types',
-                    [
-                      'transform-imports',
-                      {
-                        '@material-ui/core': {
-                          transform: function(importName) {
-                            return `@material-ui/core/${importName}`;
-                          },
-                          preventFullImport: true
-                        },
-                        '@material-ui/lab': {
-                          transform: function(importName) {
-                            return `@material-ui/lab/${importName}`;
-                          },
-                          preventFullImport: true
-                        },
-                        '@material-ui/styles': {
-                          transform: function(importName) {
-                            return `@material-ui/styles/${importName}`;
-                          },
-                          preventFullImport: true
-                        },
-                        '@material-ui/icons': {
-                          transform: function(importName) {
-                            return `@material-ui/icons/${importName}`;
-                          },
-                          preventFullImport: true
-                        }
-                      }
-                    ],
-                    isDevEnv && 'react-hot-loader/babel'
-                  ].filter(Boolean),
-                  cacheDirectory: true,
-                  cacheCompression: !isDevEnv,
-                  compact: false,
-                  highlightCode: true,
-                  sourceMaps: isDevEnv
+                  envName: env.NODE_ENV
                 }
               }
             },

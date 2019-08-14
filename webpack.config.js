@@ -104,6 +104,13 @@ module.exports = env => {
           }
         },
         {
+          enforce: 'pre',
+          exclude: /node_modules/,
+          include: /src/,
+          test: /\.(j|t)sx?$/,
+          loader: 'eslint-loader'
+        },
+        {
           oneOf: [
             {
               exclude: /node_modules/,

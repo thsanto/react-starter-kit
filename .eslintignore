@@ -1,5 +1,6 @@
 node_modules
+config
 dist
-webpack.config.js
 src/serviceWorker.ts
 src/types.d.ts
+webpack.config.js

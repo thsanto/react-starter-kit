@@ -1,1 +1,41 @@
-{}
+{
+  "files.exclude": {
+    ".git/": true,
+    "node_modules/": false,
+    "public/": false
+  },
+  "search.exclude": {
+    "**/.cache": true,
+    "**/node_modules": true,
+    "**/public": true
+  },
+  "editor.rulers": [100],
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ],
+  // "tslint.enable": false,
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "debug.node.autoAttach": "on",
+  "prettier.printWidth": 100,
+  "prettier.tabWidth": 2,
+  "prettier.semi": true,
+  "prettier.singleQuote": true
+}

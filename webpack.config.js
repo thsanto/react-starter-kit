@@ -102,9 +102,7 @@ module.exports = env => {
           parser: {
             requireEnsure: false
           }
-        }
-      ],
-      rules: [
+        },
         {
           oneOf: [
             {

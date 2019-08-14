@@ -10,7 +10,10 @@
     "build": "webpack --env.NODE_ENV=production",
     "start": "webpack-dev-server --env.NODE_ENV=development",
     "test": "jest --watch",
-    "gen": "plop --plopfile tools/generator/plopfile.js"
+    "gen": "plop --plopfile tools/generator/plopfile.js",
+    "type-check": "tsc",
+    "lint": "eslint **/*.{js,jsx,ts,tsx}",
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
@@ -44,6 +47,8 @@
     "@types/react-helmet": "^5.0.9",
     "@types/react-router-config": "^5.0.0",
     "@types/react-router-dom": "^4.3.4",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "autoprefixer": "^9.6.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
@@ -55,6 +60,10 @@
     "compression-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
     "file-loader": "^4.2.0",
     "html-webpack-plugin": "^4.0.0-beta.8",
     "husky": "^3.0.3",
@@ -84,16 +93,5 @@
   },
   "resolutions": {
     "react-router": "^5.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --print-width 100 --single-quote --write",
-      "git add"
-    ]
   }
 }

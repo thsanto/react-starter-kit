@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/interface-name-prefix: 0 */
+
 import React, { Component, ErrorInfo } from 'react';
 
 import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';

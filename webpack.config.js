@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 // Dev plugins
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -21,7 +22,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
-const configs = {
+const getOptions = (env = {}) => ({
   // paths
   src: path.resolve(__dirname, 'src'),
   dist: path.resolve(__dirname, 'dist'),
@@ -30,11 +31,10 @@ const configs = {
   publicPath: '/',
 
   // dev server
-  https: process.env.HTTPS || false,
-  host: process.env.HOST || '0.0.0.0',
-  port: process.env.PORT || 3000,
-  dashboardPort: 3001
-};
+  https: env.HTTPS || false,
+  host: env.HOST || '0.0.0.0',
+  port: env.PORT || 3000
+});
 
 const getStyleLoaders = isDevEnv => {
   if (isDevEnv) {
@@ -81,18 +81,20 @@ const getStyleLoaders = isDevEnv => {
   };
 };
 
-module.exports = env => {
-  const isDevEnv = env.NODE_ENV === 'development' ? true : false;
+module.exports = (env, argv) => {
+  const envName = argv.mode;
+  const isDevEnv = envName === 'development' ? true : false;
+  const options = getOptions(env);
 
   const config = {
     mode: isDevEnv ? 'development' : 'production',
-    entry: configs.entry,
+    entry: options.entry,
     output: {
       filename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.js`,
       chunkFilename: `static/js/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.js`,
-      path: configs.dist,
+      path: options.dist,
       pathinfo: isDevEnv,
-      publicPath: configs.publicPath
+      publicPath: options.publicPath
     },
     module: {
       strictExportPresence: true,
@@ -119,7 +121,7 @@ module.exports = env => {
               use: {
                 loader: 'babel-loader',
                 options: {
-                  envName: env.NODE_ENV
+                  envName
                 }
               }
             },
@@ -160,7 +162,7 @@ module.exports = env => {
       new HtmlWebpackPlugin({
         inject: true,
         template: './public/index.html',
-        baseUrl: configs.publicPath,
+        baseUrl: options.publicPath,
         minify: isDevEnv
           ? false
           : {
@@ -176,14 +178,18 @@ module.exports = env => {
               minifyURLs: true
             }
       }),
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': isDevEnv ? '"development"' : '"production"'
+      new Dotenv({
+        path: `./.env.${envName}`,
+        safe: true,
+        systemvars: true,
+        silent: true,
+        defaults: './.env'
       }),
       !isDevEnv &&
         new CopyPlugin([
           {
-            from: configs.public,
-            to: configs.dist,
+            from: options.public,
+            to: options.dist,
             ignore: ['index.html']
           }
         ]),
@@ -192,7 +198,7 @@ module.exports = env => {
         chunkFilename: `static/css/[name]${isDevEnv ? '' : '.[contenthash:8]'}.chunk.css`
       }),
       new PurgecssPlugin({
-        paths: glob.sync(`${configs.src}/**/*`, { nodir: true })
+        paths: glob.sync(`${options.src}/**/*`, { nodir: true })
       }),
       isDevEnv && new webpack.NamedModulesPlugin(),
       isDevEnv && new webpack.HotModuleReplacementPlugin(),
@@ -306,18 +312,18 @@ module.exports = env => {
 
     config.devServer = {
       compress: true,
-      contentBase: configs.src,
+      contentBase: options.src,
       disableHostCheck: true,
       historyApiFallback: true,
-      https: configs.https,
-      host: configs.highlightCode,
+      https: options.https,
+      host: options.highlightCode,
       hot: true,
       inline: true,
       open: true,
       overlay: true,
-      port: configs.port,
-      public: `http://localhost:${configs.port}`,
-      publicPath: configs.publicPath,
+      port: options.port,
+      public: `http://localhost:${options.port}`,
+      publicPath: options.publicPath,
       stats: {
         colors: true,
         errors: true,

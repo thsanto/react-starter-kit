@@ -2,7 +2,7 @@
   "name": "react-starter-kit",
   "version": "0.1.0",
   "description": "React Starter Kit - React, Typescript, Babel, Webpack",
-  "repository": "https://github.com/auvansang/react-starter-kit.git",
+  "repository": "https://github.com/sisa-cafe/react-starter-kit.git",
   "author": "Sang Au <auvansang@outlook.com>",
   "license": "MIT",
   "scripts": {

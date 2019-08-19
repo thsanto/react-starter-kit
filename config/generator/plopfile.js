@@ -39,7 +39,13 @@ module.exports = plop => {
         type: 'append',
         path: '../../src/components/{{dashCase path}}/index.ts',
         template: `export { default as {{pascalCase name}} } from './{{pascalCase name}}';`
-      }
+      },
+      {
+        type: 'add',
+        path: '../../src/locales/en/components/{{dashCase path}}/{{dashCase name}}.json',
+        templateFile: 'templates/component/locale.json.hbs',
+        skipIfExists: true
+      },
     ]
   });
 
@@ -83,7 +89,13 @@ module.exports = plop => {
         type: 'append',
         path: '../../src/pages/{{dashCase path}}/index.ts',
         template: `export { default as {{pascalCase name}} } from './{{pascalCase name}}';`
-      }
+      },
+      {
+        type: 'add',
+        path: '../../src/locales/en/pages/{{dashCase path}}/{{dashCase name}}.json',
+        templateFile: 'templates/page/locale.json.hbs',
+        skipIfExists: true
+      },
     ]
   });
 };

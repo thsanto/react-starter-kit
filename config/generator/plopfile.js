@@ -80,18 +80,6 @@ module.exports = plop => {
       },
       {
         type: 'add',
-        path: '../../src/pages/{{dashCase path}}/index.ts',
-        templateFile: 'templates/page/index.ts.hbs',
-        skipIfExists: true
-      },
-      {
-        // Action type 'append' injects a template into an existing file
-        type: 'append',
-        path: '../../src/pages/{{dashCase path}}/index.ts',
-        template: `export { default as {{pascalCase name}} } from './{{pascalCase name}}';`
-      },
-      {
-        type: 'add',
         path: '../../src/locales/en/pages/{{dashCase path}}/{{dashCase name}}.json',
         templateFile: 'templates/page/locale.json.hbs',
         skipIfExists: true

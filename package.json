@@ -12,7 +12,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage": "jest --coverage",
-    "gen": "plop --plopfile config/generator/plopfile.js",
+    "gen": "plop --plopfile config/plop/plop.config.js",
     "type-check": "tsc",
     "lint": "eslint **/*.{js,jsx,ts,tsx}",
     "lint:fix": "yarn lint --fix"

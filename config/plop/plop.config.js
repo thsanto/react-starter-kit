@@ -1,4 +1,5 @@
 module.exports = plop => {
+  plop.setWelcomeMessage("React Stater Kit - Generator"),
   plop.setGenerator('com', {
     description: 'Create a reusable component',
     prompts: [

@@ -1,6 +1,6 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import Meta from 'components/shared/Meta';
 
 import { Card, CardContent, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -43,10 +43,7 @@ const NotFound = (props: Props) => {
 
   return (
     <>
-      <Helmet>
-        <title>{t('pageTitle')}</title>
-        <meta name="description" content={t('pageDescription')} />
-      </Helmet>
+      <Meta title={t('pageTitle')} description={t('pageDescription')} />
       <section className={classes.root}>
         <section className={classes.main}>
           <Card className={classes.card}>

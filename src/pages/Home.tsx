@@ -1,16 +1,13 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import Meta from 'components/shared/Meta';
 
 const Home = () => {
   const [t] = useTranslation('page__home');
 
   return (
     <>
-      <Helmet>
-        <title>{t('pageTitle')}</title>
-        <meta name="description" content={t('pageDescription')} />
-      </Helmet>
+      <Meta title={t('pageTitle')} description={t('pageDescription')} />
       Home Page
     </>
   );
